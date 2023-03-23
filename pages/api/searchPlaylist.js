@@ -4,16 +4,14 @@ import { getToken } from "next-auth/jwt";
 export default async function handler(req, res) {
   const { method } = req;
 
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
-  await spotifyApi.setAccessToken(token.accessToken)
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  await spotifyApi.setAccessToken(token.accessToken);
 
   switch (method) {
     case "GET":
       try {
         const query = req.query.q;
-        // console.log("QUERY", query)
         const response = await spotifyApi.searchPlaylists(query);
-        // console.log("RESPONSE", response.body.playlists.items)
         let items = response.body.playlists.items;
         res.status(200).json({ items });
       } catch (error) {

@@ -52,7 +52,7 @@ export default function Home({ providers }) {
   return (
     <>
       <Head>
-        <title>Login - Music Map</title>
+        <title>Login - Spotify Unwrapped</title>
         <meta name="description" content="See where your music comes from" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -69,13 +69,15 @@ export default function Home({ providers }) {
             <Error error={error} setError={setError} />
           </Grid>
           <Grid item>
-            {/* <Image src={logo} height="70" alt="logo" /> */}
             <Typography variant="h4" component="h4">
-              MUSIC MAP
+              Spotify Unwrapped
             </Typography>
-            {/* <Typography variant="body" component="p">
-              Welcome to Connor and Sebastian&apos;s CS347 project, Music Map! This application enables you to see where in the world your music comes from, and prompts you with music from new geographic regions. We hope you enjoy!
-            </Typography> */}
+            <Typography variant="body" component="p">
+              Welcome to Sebastian&apos;s CS 448B Final Project, Spotify
+              Unwrapped! This application enables you to see where in the world
+              your music comes from, and prompts you with music from new
+              geographic regions. We hope you enjoy!
+            </Typography>
           </Grid>
 
           <Grid item>

@@ -8,17 +8,28 @@ import {
   Divider,
   Autocomplete,
   Typography,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
 
-export default function SearchBar({ selectedPlaylist, setSelectedPlaylist }) {
+export default function SearchBar({
+  selectedPlaylist,
+  setSelectedPlaylist,
+  showGlobalPlaylists,
+  setShowGlobalPlaylists,
+}) {
   const { data: session, status } = useSession({ required: false });
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("Recently Played");
 
   // three playlists that everyone has
-  const basicOptions = [{ name: "Recently Played", image: "./playlist/history.jpg", id: "recents" }, { name: "Top Songs", image: "./playlist/top.jpg", id: "top" }, {
+  const basicOptions = [
+    { name: "Recently Played", image: "./playlist/history.jpg", id: "recents" },
+    { name: "Top Songs", image: "./playlist/top.jpg", id: "top" },
+    {
       name: "Liked Songs",
       image: "https://t.scdn.co/images/3099b3803ad9496896c43f22fe9be8c4.png",
       id: "liked",
@@ -33,16 +44,16 @@ export default function SearchBar({ selectedPlaylist, setSelectedPlaylist }) {
   const formatPlaylistResponse = (items) => {
     return items.map((item) => ({
       name: item.name,
-      image: item.images[0].url, // maybe make a default option
+      image: item.images[0]?.url, // maybe make a default option
       id: item.id,
     }));
-  }
+  };
 
   const getUserPlaylists = async () => {
     // setLoading(true);
     const res = await fetch("/api/myPlaylists");
     const { items } = await res.json();
-    const itemsFormatted = formatPlaylistResponse(items)
+    const itemsFormatted = formatPlaylistResponse(items);
     setUserOptions(itemsFormatted);
     setOptions(basicOptions.concat(itemsFormatted));
     // setLoading(false);
@@ -52,7 +63,7 @@ export default function SearchBar({ selectedPlaylist, setSelectedPlaylist }) {
     // setLoading(true);
     const res = await fetch("/api/searchPlaylist?q=" + query);
     const { items } = await res.json();
-    const itemsFormatted = formatPlaylistResponse(items)
+    const itemsFormatted = formatPlaylistResponse(items);
     setOptions(basicOptions.concat(itemsFormatted));
     // setLoading(false);
   };
@@ -84,14 +95,29 @@ export default function SearchBar({ selectedPlaylist, setSelectedPlaylist }) {
         zIndex: 1,
         marginRight: "10px",
         marginTop: "15px",
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
       }}
     >
+      <FormGroup>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={showGlobalPlaylists}
+              onChange={() => setShowGlobalPlaylists(!showGlobalPlaylists)}
+            />
+          }
+          label="Show Global Playlists"
+        ></FormControlLabel>
+      </FormGroup>
+
       <>
         <Autocomplete
           options={options}
           inputValue={query}
           onInputChange={(e, value, reason) => {
-            setQuery(value)
+            setQuery(value);
           }}
           defaultValue={options[0]}
           isOptionEqualToValue={(option, value) => option.id === value.id}
@@ -135,8 +161,8 @@ export default function SearchBar({ selectedPlaylist, setSelectedPlaylist }) {
                           style={{
                             height: "30px",
                             width: "30px",
-                            marginRight: "10px", 
-                            objectFit: "cover"
+                            marginRight: "10px",
+                            objectFit: "cover",
                           }}
                         />
                       ) : (
@@ -163,12 +189,21 @@ export default function SearchBar({ selectedPlaylist, setSelectedPlaylist }) {
           }}
           renderOption={(props, option) => {
             return (
-              <div style={{ display: "flex", flexDirection: "row" }} {...props} key={option.id}>
+              <div
+                style={{ display: "flex", flexDirection: "row" }}
+                {...props}
+                key={option.id}
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={option.image}
                   alt={option.name}
-                  style={{ height: "30px", width: "30px", marginRight: "10px", objectFit: "cover" }}
+                  style={{
+                    height: "30px",
+                    width: "30px",
+                    marginRight: "10px",
+                    objectFit: "cover",
+                  }}
                 />
                 <Typography>{option.name}</Typography>
               </div>

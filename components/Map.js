@@ -1,7 +1,7 @@
 import { IconButton, Stack, Typography } from "@mui/material";
 import * as React from "react";
 import Map, { Marker, Popup } from "react-map-gl";
-import globalPlaylists from "../playlistData.json"
+import globalPlaylists from "../playlistData.json";
 
 function stringToColor(string) {
   let hash = 0;
@@ -23,12 +23,21 @@ function stringToColor(string) {
   return color;
 }
 
-export default function MapBox({ markers, activeMarkerIndex, setActiveMarkerIndex }) {
+export default function MapBox({
+  markers,
+  activeMarkerIndex,
+  setActiveMarkerIndex,
+  showGlobalPlaylists,
+}) {
   const mapRef = React.useRef(null);
-  const popupInfo = markers.find(marker => marker.index === activeMarkerIndex);
+  const popupInfo = markers.find(
+    (marker) => marker.index === activeMarkerIndex
+  );
 
   function flyToNewCenter(newActiveMarkerIndex) {
-    const newPopupInfo = markers.find(marker => marker.index === newActiveMarkerIndex);
+    const newPopupInfo = markers.find(
+      (marker) => marker.index === newActiveMarkerIndex
+    );
     mapRef.current?.flyTo({
       center: [newPopupInfo.longitude, newPopupInfo.latitude],
       // zoom: 2,
@@ -37,8 +46,6 @@ export default function MapBox({ markers, activeMarkerIndex, setActiveMarkerInde
       easing: (t) => t,
     });
   }
-
-
 
   React.useEffect(() => {
     if (activeMarkerIndex !== null) {
@@ -78,7 +85,7 @@ export default function MapBox({ markers, activeMarkerIndex, setActiveMarkerInde
       })}
 
       {/* MARKERS FROM PLAYLISTS OF THE WORLD */}
-      {/* {
+      {showGlobalPlaylists &&
         globalPlaylists.map((country, index) => {
           return (
             <Marker
@@ -90,12 +97,11 @@ export default function MapBox({ markers, activeMarkerIndex, setActiveMarkerInde
               onClick={(e) => {
                 e.originalEvent.stopPropagation();
                 // setPopupInfo(country);
-                window.open(`https://open.spotify.com${country.url}`, "_blank")
+                window.open(`https://open.spotify.com${country.url}`, "_blank");
               }}
             />
-          )
-        })
-      } */}
+          );
+        })}
 
       {/* POPUP FOR MARKERS */}
       {popupInfo && (
@@ -116,6 +122,7 @@ export default function MapBox({ markers, activeMarkerIndex, setActiveMarkerInde
             </Typography>
             <IconButton
               component="a"
+              target="_blank"
               href={`http://en.wikipedia.org/w/index.php?title=Special:Search&search=${popupInfo.name}`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}

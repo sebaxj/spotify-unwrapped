@@ -9,22 +9,21 @@ async function refreshAccessToken(token) {
 
     const { body: refreshedToken } = await spotifyApi.refreshAccessToken();
 
-    console.log("refreshed token", refreshedToken);
+    // refreshed token
 
     return {
       ...token,
       accessToken: refreshedToken.access_token,
       accessTokenExpires: Date.now() + refreshedToken.expires_in * 1000,
       refreshToken: refreshedToken.refresh_token ?? token.refreshToken,
-    }
-
+    };
   } catch (error) {
     console.log(error);
 
     return {
       ...token,
-      error: "RefreshAccessTokenError"
-    }
+      error: "RefreshAccessTokenError",
+    };
   }
 }
 
@@ -38,7 +37,7 @@ export default NextAuth({
     }),
   ],
   pages: {
-    signIn: '/login',
+    signIn: "/login",
     // signOut: '/',
     // error: '/', // Error code passed in query string as ?error=
     // newUser: '/welcome' // New users will be directed here on first sign in (leave the property out if not of interest)
@@ -58,13 +57,13 @@ export default NextAuth({
       }
 
       if (Date.now() < token.accessTokenExpires) {
-        console.log("token is still valid");
+        // token is still valid
         return token;
       }
 
       return await refreshAccessToken(token);
     },
-    async session({session, token}) {
+    async session({ session, token }) {
       session.user.accessToken = token.accessToken;
       session.user.refreshToken = token.refreshToken;
       session.user.id = token.id;
