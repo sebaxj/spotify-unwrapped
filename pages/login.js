@@ -69,15 +69,26 @@ export default function Home({ providers }) {
             <Error error={error} setError={setError} />
           </Grid>
           <Grid item>
-            <Typography variant="h4" component="h4">
-              Spotify Unwrapped
-            </Typography>
-            <Typography variant="body" component="p">
-              Welcome to Sebastian&apos;s CS 448B Final Project, Spotify
-              Unwrapped! This application enables you to see where in the world
-              your music comes from, and prompts you with music from new
-              geographic regions. We hope you enjoy!
-            </Typography>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "1rem",
+                paddingLeft: "1rem",
+                paddingRight: "1rem",
+              }}
+            >
+              <Typography variant="h4" component="h4">
+                Spotify Unwrapped
+              </Typography>
+              <Typography variant="body" component="p" textAlign="center">
+                Welcome to Sebastian&apos;s CS 448B Final Project, Spotify
+                Unwrapped! This application enables you to see where in the
+                world your music comes from, and prompts you with music from new
+                geographic regions. We hope you enjoy!
+              </Typography>
+            </div>
           </Grid>
 
           <Grid item>
